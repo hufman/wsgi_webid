@@ -25,3 +25,26 @@ The following extra variables may be found in the environment:
 - `webid.graph` - If webid.valid, this contains an RDFLib graph of the parsed information from the WebID document
 - `webid.validator` - If constructed with the debug flag, this contains the webid.validator.WebIDValidator object used to parse the WebID
 - `webid.cert` - If constructed with the debug flag, this contains the certstr from the HTTP request that was used
+
+## Web Server Setup
+
+The web server in front of the wrapped WSGI application must listen on HTTPS, in order to allow the WebID client SSL certificate to be sent. The web server must also be configured to accept client SSL certificates, but without verifying them against a CA. The web server must also be configured to pass the entire client SSL certificate to the backend process, either through an HTTP request header through a reverse proxy, or directly as an CGI/WSGI environment variable.
+
+### Apache httpd Setup
+
+First, the server or vhost must be configured as a normal SSL website, by setting `SSLEngine`, `SSLCertificateFile`, and `SSLCertificateKeyFile`.
+
+Next, it must be configured to accept a client cert and pass it on to the backend. Unfortunately, Apache can not request a client SSL certificate without not verifying it against a CA, so it has to be marked as optional and the client must be forced to send it.
+
+    SSLVerifyClient optional_no_ca
+    SSLVerifyDepth 2
+    RequestHeader set SSL_CLIENT_CERT "%{SSL_CLIENT_CERT}s"
+
+### Flask Setup
+
+After setting up the web server in front, Flask has to wrap its WSGI application with this WebID middleware. There must be a line that wraps the `app.wsgi_app`:
+
+    from wsgi_webid import WebIDMiddleware
+    app.wsgi_app = WebIDMiddleware(app.wsgi_app, envkey="HTTP_SSL_CLIENT_CERT")
+
+Then, app can be used with any WSGI server, and WebIDMiddleware will automatically work.
