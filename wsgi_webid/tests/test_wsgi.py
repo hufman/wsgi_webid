@@ -43,6 +43,12 @@ class TestWebid(TestCase):
 		self.environ = {}
 		self.webid_graph = create_webid_graph(webid_url, cert)
 
+	def assertIs(self, left, right):
+		self.assertTrue(left is right)
+
+	def assertIsNot(self, left, right):
+		self.assertTrue(left is not right)
+
 	@httmock.all_requests
 	def webid_server(self, url, request):
 		content = None
