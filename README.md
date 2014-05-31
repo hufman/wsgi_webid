@@ -48,3 +48,6 @@ After setting up the web server in front, Flask has to wrap its WSGI application
     app.wsgi_app = WebIDMiddleware(app.wsgi_app, envkey="HTTP_SSL_CLIENT_CERT")
 
 Then, app can be used with any WSGI server, and WebIDMiddleware will automatically work.
+
+
+[![Build Status](https://travis-ci.org/hufman/wsgi_webid.svg?branch=master)](https://travis-ci.org/hufman/wsgi_webid)
