@@ -1,1 +1,2 @@
+rdflib>=3.2.0,<=3.4.0
 python-webid==0.2
