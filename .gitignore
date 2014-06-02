@@ -1,3 +1,6 @@
 *pyc
 *pycache*
 venv
+build
+dist
+wsgi_webid.egg-info
