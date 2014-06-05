@@ -10,7 +10,7 @@ requirements = file('requirements.txt').read().split('\n')
 test_requirements = file('requirements.test.txt').read().split('\n')
 
 setup(name='wsgi_webid',
-      version='0.1.1',
+      version='0.1.2',
       description='WSGI Middleware for WebID authentication',
       author='Walter Huf',
       url='https://github.com/hufman/wsgi_webid',

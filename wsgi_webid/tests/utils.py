@@ -38,7 +38,7 @@ def create_self_signed_cert(rsa, subject={'CN':'Testing'}, san=None):
 	cert.set_subject(name)
 	cert.set_pubkey(pk)
 	cert.add_ext(X509.new_extension('basicConstraints', 'CA:FALSE'))
-	cert.add_ext(X509.new_extension('subjectKeyIdentifier', cert.get_fingerprint()))
 	cert.add_ext(X509.new_extension('subjectAltName', san))
+	cert.add_ext(X509.new_extension('subjectKeyIdentifier', cert.get_fingerprint()))
 	cert.sign(pk, 'sha1')
 	return cert
